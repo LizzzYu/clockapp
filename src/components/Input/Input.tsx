@@ -1,115 +1,16 @@
-import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
-import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-const InputContainer = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(1),
-  width: '100%',
-}));
-
-const Label = styled.label(({ theme }) => ({
-  fontSize: '16px',
-  fontWeight: '600',
-  letterSpacing: '1px',
-  color: theme.colors.white,
-}));
-
-const InputWrapper = styled.div<{ errorMessage?: string }>(
-  ({ theme, errorMessage }) => ({
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    background: theme.colors.white,
-    border: `2px solid ${errorMessage ? theme.colors.red : theme.colors.white}`,
-    borderRadius: '15px',
-    padding: `0 ${theme.spacing(6)} 0 ${theme.spacing(3)}`,
-    transition: 'border-color 0.2s ease-in-out',
-
-    '&:focus-within': {
-      outline: 'none',
-      border: `2px solid ${
-        errorMessage ? theme.colors.red : theme.colors.green
-      }`,
-    },
-  })
-);
-
-const StyledInput = styled.input<{
-  iconposition: IconPosition;
-  icon?: IconDefinition;
-}>`
-  box-sizing: border-box;
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  line-height: 16px;
-  height: 44px;
-  color: ${({ theme }) => theme.colors.secondaryBlack};
-  background-color: transparent;
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.lightGrey};
-    font-weight: 300;
-    font-size: 14px;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  ${({ iconposition, icon }) =>
-    icon &&
-    css`
-    padding-${iconposition === 'start' ? 'left' : 'right'}: 30px;
-  `}
-`;
-
-const ResetInputIcon = styled(FontAwesomeIcon)<{
-  iconposition?: IconPosition;
-}>`
-  position: absolute;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme, iconposition }) => css`
-    right: ${iconposition === 'end' ? theme.spacing(7) : theme.spacing(2)};
-  `}
-`;
-
-const IconWrapper = styled.div<{ iconPosition: IconPosition }>(
-  ({ theme, iconPosition }) => ({
-    position: 'absolute',
-    cursor: 'pointer',
-    color: theme.colors.black,
-    [iconPosition === 'end' ? 'right' : 'left']: theme.spacing(2),
-  })
-);
-
-const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.red};
-  font-size: 14px;
-`;
-
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  type?: string;
-  value?: string | number;
-  placeholder?: string;
-  icon?: IconDefinition;
-  iconPosition?: IconPosition;
-  iconSize?: SizeProp;
-  errorMessage?: string;
-  onIconClick?: () => void;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-type IconPosition = 'start' | 'end';
+import { InputProps } from './Input.types';
+import {
+  ErrorMessage,
+  IconWrapper,
+  InputContainer,
+  InputWrapper,
+  Label,
+  ResetInputIcon,
+  StyledInput,
+} from './Input.styles';
 
 const Input: React.FC<InputProps> = ({
   label,
@@ -139,9 +40,8 @@ const Input: React.FC<InputProps> = ({
   const handleResetClick = () => {
     setInputValue('');
     onChange?.({
-      target: { value: '' },
+      target: inputRef.current!,
     } as React.ChangeEvent<HTMLInputElement>);
-
     inputRef.current?.focus();
   };
 
