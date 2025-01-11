@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,24 +20,28 @@ const Label = styled.label(({ theme }) => ({
   color: theme.colors.white,
 }));
 
-const InputWrapper = styled.div(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  background: theme.colors.white,
-  border: `2px solid ${theme.colors.white}`,
-  borderRadius: '15px',
-  padding: `0 ${theme.spacing(3)}`,
-  transition: 'border-color 0.2s ease-in-out',
+const InputWrapper = styled.div<{ errorMessage?: string }>(
+  ({ theme, errorMessage }) => ({
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    background: theme.colors.white,
+    border: `2px solid ${errorMessage ? theme.colors.red : theme.colors.white}`,
+    borderRadius: '15px',
+    padding: `0 ${theme.spacing(6)} 0 ${theme.spacing(3)}`,
+    transition: 'border-color 0.2s ease-in-out',
 
-  '&:focus-within': {
-    outline: 'none',
-    border: `2px solid ${theme.colors.green}`,
-  },
-}));
+    '&:focus-within': {
+      outline: 'none',
+      border: `2px solid ${
+        errorMessage ? theme.colors.red : theme.colors.green
+      }`,
+    },
+  })
+);
 
 const StyledInput = styled.input<{
-  iconPosition: IconPosition;
+  iconposition: IconPosition;
   icon?: IconDefinition;
 }>`
   box-sizing: border-box;
@@ -60,10 +64,10 @@ const StyledInput = styled.input<{
     outline: none;
   }
 
-  ${({ iconPosition, icon }) =>
+  ${({ iconposition, icon }) =>
     icon &&
     css`
-    padding-${iconPosition === 'start' ? 'left' : 'right'}: 30px;
+    padding-${iconposition === 'start' ? 'left' : 'right'}: 30px;
   `}
 `;
 
@@ -87,6 +91,11 @@ const IconWrapper = styled.div<{ iconPosition: IconPosition }>(
   })
 );
 
+const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.red};
+  font-size: 14px;
+`;
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   type?: string;
@@ -95,6 +104,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: IconDefinition;
   iconPosition?: IconPosition;
   iconSize?: SizeProp;
+  errorMessage?: string;
   onIconClick?: () => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -109,6 +119,7 @@ const Input: React.FC<InputProps> = ({
   icon,
   iconPosition = 'start',
   iconSize,
+  errorMessage,
   onIconClick,
   onChange,
   ...props
@@ -116,6 +127,8 @@ const Input: React.FC<InputProps> = ({
   const [inputValue, setInputValue] = useState<string | number | undefined>(
     value
   );
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // sync input value with parent value
   useEffect(() => {
@@ -128,12 +141,14 @@ const Input: React.FC<InputProps> = ({
     onChange?.({
       target: { value: '' },
     } as React.ChangeEvent<HTMLInputElement>);
+
+    inputRef.current?.focus();
   };
 
   return (
     <InputContainer>
       {label && <Label>{label}</Label>}
-      <InputWrapper>
+      <InputWrapper errorMessage={errorMessage}>
         {icon && iconPosition === 'start' && (
           <IconWrapper iconPosition={iconPosition} onClick={onIconClick}>
             <FontAwesomeIcon icon={icon} size={iconSize} />
@@ -141,11 +156,12 @@ const Input: React.FC<InputProps> = ({
         )}
         <StyledInput
           {...props}
+          ref={inputRef}
           onChange={onChange}
           type={type}
           value={inputValue}
           placeholder={placeholder}
-          iconPosition={iconPosition}
+          iconposition={iconPosition}
           icon={icon}
         />
         {value && (
@@ -161,6 +177,7 @@ const Input: React.FC<InputProps> = ({
           </IconWrapper>
         )}
       </InputWrapper>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </InputContainer>
   );
 };

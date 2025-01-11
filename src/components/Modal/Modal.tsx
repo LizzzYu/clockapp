@@ -52,14 +52,14 @@ const ModalContainer = styled.div<{ isClosing: boolean }>`
     ease-out;
 
   ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
-    min-width: 450px;
-    min-height: 400px;
+    min-width: 200px;
+    min-height: 200px;
     padding: 40px;
   }
 
   ${({ theme }) => theme.mediaQuery(Breakpoints.UltraWide)} {
-    min-width: 600px;
-    min-height: 500px;
+    min-width: 300px;
+    min-height: 300px;
   }
 
   @keyframes scaleUp {
@@ -87,8 +87,8 @@ const ModalContainer = styled.div<{ isClosing: boolean }>`
 
 const CloseIcon = styled(FontAwesomeIcon)`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 16px;
+  right: 16px;
   font-size: 20px;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.secondaryBlack};

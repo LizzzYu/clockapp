@@ -19,7 +19,7 @@ const Wrapper = styled.div`
     background-color: rgba(255, 255, 255, 0.6);
   }
 
-  ${({ theme }) => theme.mediaQuery(Breakpoints.LargeDesktop)} {
+  ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
     &:hover {
       background-color: rgba(255, 255, 255, 0.6);
       cursor: pointer;

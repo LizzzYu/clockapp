@@ -1,18 +1,18 @@
+import { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import ClockCard from './ClockCard';
-import { TIMEZONE_OPTIONS } from '../../constants/timezones.const';
-import { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Input from '../../components/Input/Input';
-import { css } from '@emotion/react';
+import { TIMEZONE_OPTIONS } from '../../constants/timezones.const';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 import { Timezone } from '../../types/timezone.types';
+import ClockCard from './ClockCard';
 
 const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.flexCenter}
@@ -151,13 +151,15 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
         />
       </InputWrapper>
       <Container>
-        <ArrowButton
-          onClick={handlePrev}
-          disabled={currentPage === 0}
-          position='left'
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </ArrowButton>
+        {currentPage !== 0 && (
+          <ArrowButton
+            onClick={handlePrev}
+            disabled={currentPage === 0}
+            position='left'
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </ArrowButton>
+        )}
 
         <CarouselContainer>
           <AnimatePresence mode='wait'>
@@ -179,13 +181,15 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
           </AnimatePresence>
         </CarouselContainer>
 
-        <ArrowButton
-          onClick={handleNext}
-          disabled={currentPage === totalPages - 1}
-          position='right'
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </ArrowButton>
+        {currentPage !== totalPages - 1 && (
+          <ArrowButton
+            onClick={handleNext}
+            disabled={currentPage === totalPages - 1}
+            position='right'
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </ArrowButton>
+        )}
       </Container>
     </Wrapper>
   );

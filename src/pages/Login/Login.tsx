@@ -147,6 +147,7 @@ const Login = () => {
           onChange={(e) => setUsername(e.target.value)}
           onKeyDown={handleOnkeyDown}
           autoFocus
+          errorMessage={errorMessage}
         />
         <Input
           label='Password'
@@ -158,6 +159,7 @@ const Login = () => {
           onIconClick={togglePasswordVisibility}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={handleOnkeyDown}
+          errorMessage={errorMessage}
         />
       </InputWrapper>
       <Button
@@ -180,7 +182,6 @@ const Login = () => {
           void handleLogin();
         }}
         disabled={!username || !password || isLoading}
-        errorMessage={errorMessage}
       >
         Login
       </Button>
@@ -191,7 +192,7 @@ const Login = () => {
         </Button>
       </Footer>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <img width={isMobile || isTablet ? 130 : 170} src={ComingSoon} />
+        <img width={isMobile || isTablet ? 130 : 150} src={ComingSoon} />
         <p>coming soon...</p>
         <Button onClick={closeModal}>Confirm</Button>
       </Modal>

@@ -91,7 +91,7 @@ const ClockVisual: React.FC<ClockProps> = ({
       const now = DateTime.now().setZone(timezone);
       const hours = now.hour % 12;
       const minutes = now.minute;
-      const seconds = now.second;
+      // const seconds = now.second;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -116,15 +116,15 @@ const ClockVisual: React.FC<ClockProps> = ({
 
       // hour hand
       const hourAngle = ((hours + minutes / 60) * Math.PI) / 6;
-      drawHand(hourAngle, radius * 0.5, size * 0.03, '#A44A4A');
+      drawHand(hourAngle, radius * 0.5, size * 0.02, '#D81E5B');
 
       // minute hand
       const minuteAngle = (minutes * Math.PI) / 30;
-      drawHand(minuteAngle, radius * 0.7, size * 0.02, '#A44A4A');
+      drawHand(minuteAngle, radius * 0.7, size * 0.02, '#D81E5B');
 
       // second hand
-      const secondAngle = (seconds * Math.PI) / 30;
-      drawHand(secondAngle, radius * 0.9, size * 0.01, '#D81E5B');
+      // const secondAngle = (seconds * Math.PI) / 30;
+      // drawHand(secondAngle, radius * 0.9, size * 0.01, 'red');
 
       // draw clock center
       ctx.beginPath();
@@ -136,7 +136,7 @@ const ClockVisual: React.FC<ClockProps> = ({
     drawStaticPart();
     drawDynamicPart();
 
-    const interval = setInterval(drawDynamicPart, 1000);
+    const interval = setInterval(drawDynamicPart, 10000);
 
     return () => {
       // release canvas

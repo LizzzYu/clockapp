@@ -5,8 +5,9 @@ import {
   faMagnifyingGlass,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import Input from '../Input/Input';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
+import Input from '../Input/Input';
+import { Breakpoints } from '../../constants/breakpoints.enum';
 
 const SelectorWrapper = styled.div`
   position: relative;
@@ -45,6 +46,15 @@ const OptionsList = styled.ul`
   background-color: rgba(255, 255, 255, 0.4);
   list-style: none;
   overflow-y: auto;
+
+  ${({ theme }) => theme.mediaQuery(Breakpoints.Tablet)} {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+    }
+  }
 `;
 
 const OptionItem = styled.li<{ selected: boolean }>`
