@@ -31,6 +31,12 @@ const ClocksWrapper = styled.div`
   }
 `;
 
+const ClockWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const EditIcon = styled(FontAwesomeIcon)`
   position: absolute;
   top: 40px;
@@ -125,7 +131,10 @@ const Clock = () => {
           )?.time;
 
           return (
-            <div key={clock.label + index}>
+            <ClockWrapper
+              key={`${clock.label}-${index}`}
+              onClick={() => handleEdit(index)}
+            >
               <ClockVisual
                 timezone={clock.timezone}
                 city={clock.label}
@@ -139,7 +148,7 @@ const Clock = () => {
                   <CityLabel>{clock.label}</CityLabel>
                 </LabelsContainer>
               )}
-            </div>
+            </ClockWrapper>
           );
         })}
       </ClocksWrapper>
