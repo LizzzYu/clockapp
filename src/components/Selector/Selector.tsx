@@ -109,8 +109,6 @@ const Selector = <T,>({
     );
   });
 
-  console.log({ selectedOption });
-
   return (
     <SelectorWrapper>
       <SearchInputWrapper>
