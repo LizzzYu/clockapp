@@ -46,7 +46,7 @@ A responsive, feature-rich clock application built with **React**, **Redux**, **
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/clock-app.git
+   git clone https://github.com/LizzzYu/clockapp.git
    cd clock-app
    ```
 
@@ -156,6 +156,14 @@ A responsive, feature-rich clock application built with **React**, **Redux**, **
   <ClockVisual size={size} {...props} />;
   ```
 
+## Design
+
+Explore the app's design on [Figma](https://www.figma.com/design/qBqiiKfWL0fWwzO0NLLKgt/CLOCK!-Front-End?node-id=0-1&p=f&t=c4OusEOCZW8EFqdh-0).
+
+## API Documentation
+
+This app utilizes the [DummyJSON API](https://dummyjson.com/docs/auth#auth-login) for authentication and timezone data.
+
 ## Contributing
 
 Contributions are welcome! To contribute:
@@ -167,4 +175,3 @@ Contributions are welcome! To contribute:
 ## License
 
 This project is licensed under the MIT License.
-# clockapp
