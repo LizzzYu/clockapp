@@ -1,89 +1,170 @@
-<img src="https://static.pndlm.net/pndlm/4row-currentcolor-full.svg" width="360" alt="☵☲ PNDLM" />
+# Clock App ⏰
 
-# Clock App (2025)
+A responsive, feature-rich clock application built with **React**, **Redux**, **Emotion**, and **Framer Motion**. This app allows users to view and edit clocks for multiple timezones with smooth animations and an intuitive interface.
 
-Welcome!  In this exercise you'll build one or two screens of a mobile-first frontend.  Your work here will help us understand your frontend programming capabilities as well as your approach and philosophy toward this type of work.
+---
 
-We will primarily evaluate:
+## Table of Contents
 
-* Your attention to consistency and aesthetic details.
-* The cleanliness, flexibility, responsiveness, and reusability of your components and styling.
-* Your ability to work naturally within the provided codebase.
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Code Highlights](#code-highlights)
+  - [Responsive Design](#responsive-design)
+  - [Carousel Implementation](#carousel-implementation)
+  - [Clock Visualization](#clock-visualization)
+- [Contributing](#contributing)
+- [License](#license)
 
-Making software that looks and feels great to the end-user is the highest priority.  However, well-thought-out, beautifully designed code lends itself extremely in this endeavor!  Be sure to leave comments in the code explaining your reasoning processes.
+---
 
-## The Project
+## Features
 
-Please review the design comps on Figma at the link below.  You can create a free Figma account if you don't already have one.
+- **Edit Clocks**: Manage clocks for various timezones.
+- **Smooth Animations**: Seamless transitions between pages and UI components using Framer Motion.
+- **Responsive Design**: Adaptable layout for mobile, tablet, and desktop using custom breakpoints.
+- **Day/Night Mode**: Clock background changes based on sunrise and sunset for a realistic feel.
+- **Timezone Selector**: A searchable and customizable dropdown to choose a timezone.
 
-* https://www.figma.com/design/qBqiiKfWL0fWwzO0NLLKgt/CLOCK!-Front-End?node-id=0-1&t=Z9A2AdXSUlBJM16O-1
+---
 
-There are designs for two screens available.  You can choose to build either one, or both.
+## Technologies Used
 
-### Screen 1: Login
+- **React**: Component-based UI library.
+- **Redux**: State management for timezones and user authentication.
+- **Emotion**: Styled-components for CSS-in-JS.
+- **Framer Motion**: Animations and transitions.
+- **Luxon**: Timezone handling and date-time utilities.
+- **SunCalc**: Day/Night detection based on geographic coordinates.
+- **React-Router**: Navigation and route protection.
 
-* The user should be able to enter a username and password and press the Login button.
-* When the Login button is pressed, the app should call the [Login API endpoint on DummyJSON](https://dummyjson.com/docs/auth#auth-login).
-* If the login is successful, a success message should be displayed— or if you are building both screens, the user should be moved to the Clocks screen.
-* "Forgot Password", "Register" and "Remember me" should be tappable, but don't need to perform any action, or can just display a simple "coming soon" alert box.
+---
 
-### Screen 2: Clocks
+## Installation
 
-* The user will be presented with two clocks.
-* You may add a second (秒) hand to the clocks if so desired.
-* Optional: Perform clock updates via dispatches to Redux.
+1. Clone the repository:
 
-## Design Details
+   ```bash
+   git clone https://github.com/your-username/clock-app.git
+   cd clock-app
+   ```
 
-We have only provided designs for mobile form factor.  Do your best to make the designs look nice also when viewed on tablet- and desktop-size screens.  Responsive code is encouraged!
+2. Install dependencies:
 
-You should also favor vector graphics and drawing technologies over raster graphics, unless there is a specific situation where you reason a raster would be a better choice.
+   ```bash
+   npm install
+   ```
 
-The fonts and icons used in the designs are available at [Fontsource](https://fontsource.org/fonts/figtree) and [FontAwesome](https://fontawesome.com/icons/eye-slash?f=classic&s=regular).
+3. Start the development server:
 
-## Technical Details
+   ```bash
+   npm start
+   ```
 
-You may perform this exercise as a React web app or as a Flutter app.  Please choose the technology in which you are most comfortable today.
+4. Open the app in your browser:
+   ```bash
+   http://localhost:5173
+   ```
 
-### Web
+## Usage
 
-If you are performing this exercise as a React app, please fork or clone this repository as a starting point, and replace the included landing screen with your work.  This repo is set up with [Vite](https://vite.dev) and supports hot reloading.
+### Main Page Overview
 
-Our preferred libraries are also integrated, but you may also use alternatives where you are uncomfortable:
+- The main page displays two clocks:
+  - One clock shows the current timezone based on your location.
+  - The second clock is pre-set to a default timezone.
+  - The timezone of both clocks can be edited
 
-* In lieu of [Redux Toolkit](https://redux-toolkit.js.org) you may use built-in React state and context capabilities.
-* In lieu of [Typescript](https://www.typescriptlang.org) you may write plain Javascript files.
-* In lieu of [@emotion/styled components](https://emotion.sh/docs/styled) you may use any other styling technology supported by Vite.
+### Editing a Clock
 
-To get started, install [nodejs](https://nodejs.org/en/download) v22+.
+1. Click the right top icon to open the edit page.
+2. Modify clock details.
+3. Save changes to update the clock.
 
-Clone the repository to your computer, and install the npm packages:
-```bash
-cd clockapp
-npm install
-```
+### Navigating the Carousel
 
-Then run the Vite dev server:
-```bash
-npm run dev
-```
+- Click on left and right clock to scroll through available clocks.
+- Each page shows up to 4 clocks options with smooth transitions.(desktop)
 
-You should now be able to access the app at the address provided.
+## Code Highlights
 
-See also Vite's [getting started](https://vite.dev/guide/) documentation if you need more information on how to use it.
+### Responsive Design
 
-### Flutter
+- Breakpoints: Defined in a single source of truth and used across components for consistency.
 
-If you are performing this exercise as a Flutter app, please follow the instructions online for getting started [default new app template](https://docs.flutter.dev/get-started/codelab) for your work.
+  ```javascript
+  export const breakpoints = {
+    mobile: '576px',
+    tablet: '768px',
+    desktop: '1024px',
+    largeDesktop: '1440px',
+  };
+  ```
 
-## Help !!
+- Applied via Emotion and custom hooks:
 
-Don't be afraid to ask questions!  We understand not everyone will be immediately familiar with all of the technologies we've put in the stack.  Please reach out to your hiring manager if you need any assistance or clarification on the project requirements.
+  ```javascript
+  const useResponsive = () => {
+    const { width } = useWindowSize();
+    return {
+      isMobile: width <= parseInt(breakpoints.mobile),
+      isTablet:
+        width > parseInt(breakpoints.mobile) &&
+        width <= parseInt(breakpoints.desktop),
+      isDesktop: width > parseInt(breakpoints.desktop),
+    };
+  };
+  ```
 
-## Finished?
+### Carousel Implementation
 
-To submit your work, please share your fork with us on Github or zip up your work (minus gitignored files) and send it back.
+- Optimized for performance:
 
-As this is a new exercise we have just created, we would appreciate your feedback on what you liked about it and what you did not, and any ideas you have for making it better.
+  - Only 4 clocks are rendered per page using Array.slice.
+  - Smooth transitions with transform and Framer Motion.
 
-Thank you for participating and we're excited to talk with you after your submission!
+  ```javascript
+  <CarouselGrid offset={currentPage}>
+    {TIMEZONE_OPTIONS.slice(
+      currentPage * itemsPerPage,
+      currentPage * itemsPerPage + itemsPerPage
+    ).map((option) => (
+      <ClockCard key={option.label} clock={option} />
+    ))}
+  </CarouselGrid>
+  ```
+
+### Clock Visualization
+
+- Canvas used for rendering the clock face.
+- Day/Night Mode changes clock background dynamically based on geographic coordinates.
+
+  ```javascript
+  const updateDaytimeStatus = () => {
+    const now = DateTime.now().setZone(timezone).toJSDate();
+    const sunTimes = SunCalc.getTimes(now, latitude, longitude);
+
+    const isDaytime = now >= sunTimes.sunrise && now <= sunTimes.sunset;
+    setIsDaytime(isDaytime);
+  };
+  ```
+
+- Responsive size adjustment:
+  ```javascript
+  const size = isMobile ? 180 : isTablet ? 240 : 300;
+  <ClockVisual size={size} {...props} />;
+  ```
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new feature branch.
+3. Commit your changes and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
+# clockapp
