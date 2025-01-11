@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   position: fixed;
-  bottom: 50px;
+  top: 55%;
   width: 60%;
   gap: 16px;
 
@@ -151,7 +151,7 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
         />
       </InputWrapper>
       <Container>
-        {currentPage !== 0 && (
+        {currentPage !== 0 && currentItems.length !== 0 && (
           <ArrowButton
             onClick={handlePrev}
             disabled={currentPage === 0}
@@ -181,7 +181,7 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
           </AnimatePresence>
         </CarouselContainer>
 
-        {currentPage !== totalPages - 1 && (
+        {currentPage !== totalPages - 1 && currentItems.length !== 0 && (
           <ArrowButton
             onClick={handleNext}
             disabled={currentPage === totalPages - 1}

@@ -12,6 +12,7 @@ import Button from '../../components/Button/Button';
 import { PagesRoutes } from '../../constants/pages.enum';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 import { getFormattedTime } from '../../utils/getFormattedTime';
+import Location from '/location.svg';
 
 const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.flexCenter}
@@ -32,6 +33,8 @@ const ClocksWrapper = styled.div`
 `;
 
 const ClockWrapper = styled.div`
+  position: relative;
+  margin-top: 80px;
   &:hover {
     cursor: pointer;
   }
@@ -77,11 +80,22 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const LocationIcon = styled.img`
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
 const Clock = () => {
   const clocks = useSelector((state: RootState) => state.timezones.clocks);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isTablet, isMobile } = useResponsiveSize();
+
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const [currentTimes, setCurrentTimes] = useState(() =>
     clocks.map((clock) => ({
@@ -130,17 +144,23 @@ const Clock = () => {
             (t) => t.label === clock.label
           )?.time;
 
+          const isCurrentTimezone = clock.timezone === localTimezone;
+
           return (
             <ClockWrapper
               key={`${clock.label}-${index}`}
               onClick={() => handleEdit(index)}
             >
+              {isCurrentTimezone && (
+                <LocationIcon src={Location} alt='location' />
+              )}
               <ClockVisual
                 timezone={clock.timezone}
                 city={clock.label}
                 latitude={clock.latitude}
                 longitude={clock.longitude}
                 size={!isMobile ? 300 : 240}
+                isCurrentTimezone={isCurrentTimezone}
               />
               {!isMobile && (
                 <LabelsContainer>

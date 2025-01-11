@@ -8,6 +8,7 @@ interface ClockProps {
   size?: number;
   latitude: number;
   longitude: number;
+  isCurrentTimezone?: boolean;
 }
 
 const ClockVisual: React.FC<ClockProps> = ({
@@ -16,6 +17,7 @@ const ClockVisual: React.FC<ClockProps> = ({
   size = 240,
   latitude,
   longitude,
+  isCurrentTimezone = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDaytime, setIsDaytime] = useState(true);
@@ -116,11 +118,21 @@ const ClockVisual: React.FC<ClockProps> = ({
 
       // hour hand
       const hourAngle = ((hours + minutes / 60) * Math.PI) / 6;
-      drawHand(hourAngle, radius * 0.5, size * 0.02, '#D81E5B');
+      drawHand(
+        hourAngle,
+        radius * 0.5,
+        size * 0.02,
+        isCurrentTimezone ? '#0C8AD6' : '#D81E5B'
+      );
 
       // minute hand
       const minuteAngle = (minutes * Math.PI) / 30;
-      drawHand(minuteAngle, radius * 0.7, size * 0.02, '#D81E5B');
+      drawHand(
+        minuteAngle,
+        radius * 0.7,
+        size * 0.02,
+        isCurrentTimezone ? '#0C8AD6' : '#D81E5B'
+      );
 
       // second hand
       // const secondAngle = (seconds * Math.PI) / 30;
@@ -145,7 +157,7 @@ const ClockVisual: React.FC<ClockProps> = ({
       canvas.height = 0;
       clearInterval(interval);
     };
-  }, [timezone, size, city, isDaytime]);
+  }, [timezone, size, city, isDaytime, isCurrentTimezone]);
 
   return <canvas ref={canvasRef}></canvas>;
 };

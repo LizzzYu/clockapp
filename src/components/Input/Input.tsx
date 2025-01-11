@@ -72,13 +72,13 @@ const StyledInput = styled.input<{
 `;
 
 const ResetInputIcon = styled(FontAwesomeIcon)<{
-  iconPosition?: IconPosition;
+  iconposition?: IconPosition;
 }>`
   position: absolute;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.black};
-  ${({ theme, iconPosition }) => css`
-    right: ${iconPosition === 'end' ? theme.spacing(7) : theme.spacing(2)};
+  ${({ theme, iconposition }) => css`
+    right: ${iconposition === 'end' ? theme.spacing(7) : theme.spacing(2)};
   `}
 `;
 
@@ -168,7 +168,7 @@ const Input: React.FC<InputProps> = ({
           <ResetInputIcon
             onClick={handleResetClick}
             icon={faTimes}
-            iconPosition={iconPosition}
+            iconposition={iconPosition}
           />
         )}
         {icon && iconPosition === 'end' && (

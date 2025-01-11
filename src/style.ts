@@ -18,7 +18,8 @@ export enum AppColor {
 	Grey = 'grey',
 	LightBrey = 'lightGrey',
 	DarkGrey = 'darkGrey',
-	LeaderYellow = 'leaderYellow'
+	LeaderYellow = 'leaderYellow',
+	BrightBlueberry = 'brightBlueberry',
 }
 const colors: AppColors = {
 	white: '#ffffff',
@@ -34,7 +35,8 @@ const colors: AppColors = {
 	grey: '	#BEBEBE',
 	lightGrey: '#CCCCCC',
 	darkGrey: '#5B5B5B',
-	leaderYellow: '#EACA24'
+	leaderYellow: '#EACA24',
+	brightBlueberry: '#0C8AD6',
 }
 
 export type AppColors = {
