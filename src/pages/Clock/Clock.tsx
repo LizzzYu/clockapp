@@ -9,7 +9,10 @@ import useResponsiveSize from '../../utils/useResponsiveSize ';
 import ClockVisual from '../../components/ClockVisual/ClockVisual';
 import Button from '../../components/Button/Button';
 import { PagesRoutes } from '../../constants/pages.enum';
-import { getFormattedTime } from '../../utils/getFormattedTime';
+import {
+  getFormattedTime,
+  getLocalTimezone,
+} from '../../utils/getFormattedTime';
 import Location from '/location.svg';
 import {
   ButtonWrapper,
@@ -30,7 +33,7 @@ const Clock = () => {
   const dispatch = useDispatch();
   const { isTablet, isMobile } = useResponsiveSize();
 
-  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localTimezone = getLocalTimezone();
 
   const [currentTimes, setCurrentTimes] = useState(() =>
     clocks.map((clock) => ({
