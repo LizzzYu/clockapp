@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  getFormattedTime,
-  getLocalTimezone,
-} from '../../utils/getFormattedTime';
+import { getFormattedTime, getLocalTimezone } from '../../utils/timezoneUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { TIMEZONE_OPTIONS } from '../../constants/timezones.const';

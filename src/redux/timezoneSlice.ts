@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIMEZONE_OPTIONS } from '../constants/timezones.const';
 import { Timezone, TimezoneState } from '../types/timezone.types';
-import { getLocalTimezone } from '../utils/getFormattedTime';
+import { getLocalTimezone } from '../utils/timezoneUtils';
 
 const localTimezone = getLocalTimezone();
 const localClock = TIMEZONE_OPTIONS.find(

@@ -9,10 +9,7 @@ import useResponsiveSize from '../../utils/useResponsiveSize ';
 import ClockVisual from '../../components/ClockVisual/ClockVisual';
 import Button from '../../components/Button/Button';
 import { PagesRoutes } from '../../constants/pages.enum';
-import {
-  getFormattedTime,
-  getLocalTimezone,
-} from '../../utils/getFormattedTime';
+import { getFormattedTime, getLocalTimezone } from '../../utils/timezoneUtils';
 import Location from '/location.svg';
 import {
   ButtonWrapper,

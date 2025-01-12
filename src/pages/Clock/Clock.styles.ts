@@ -3,6 +3,19 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 
+export const locationIconVariants = {
+  initial: { x: '-50%', y: -20, opacity: 0 },
+  animate: {
+    x: '-50%',
+    y: [0, -5, 0],
+    opacity: 1,
+    transition: {
+      duration: 0.7,
+      ease: 'easeInOut',
+    },
+  },
+};
+
 export const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.flexCenter}
   width: 100%;
@@ -108,16 +121,3 @@ export const LocationIcon = styled(motion.img)`
     top: -60px;
   }
 `;
-
-export const locationIconVariants = {
-  initial: { x: '-50%', y: -20, opacity: 0 },
-  animate: {
-    x: '-50%',
-    y: [0, -5, 0],
-    opacity: 1,
-    transition: {
-      duration: 0.7,
-      ease: 'easeInOut',
-    },
-  },
-};

@@ -12,10 +12,7 @@ import ClockSelector from './ClockSelector';
 import { Timezone } from '../../types/timezone.types';
 import useResponsiveSize from '../../utils/useResponsiveSize ';
 import ClockList from './ClockList';
-import {
-  getFormattedTime,
-  getLocalTimezone,
-} from '../../utils/getFormattedTime';
+import { getFormattedTime, getLocalTimezone } from '../../utils/timezoneUtils';
 import Location from '/location.svg';
 import { LocationIcon } from '../Clock/Clock.styles';
 import {

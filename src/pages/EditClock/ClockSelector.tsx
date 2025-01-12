@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import Selector from '../../components/Selector/Selector';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { getFormattedTime } from '../../utils/getFormattedTime';
+import { getFormattedTime } from '../../utils/timezoneUtils';
 import { Timezone } from '../../types/timezone.types';
 
+// Styled container for the clock selector
 const Wrapper = styled.div`
   position: fixed;
   bottom: 0;
@@ -17,6 +18,7 @@ const Wrapper = styled.div`
   overflow-y: auto;
 `;
 
+// Container for each option in the selector
 const OptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -24,15 +26,11 @@ const OptionContainer = styled.div`
   width: 100%;
 `;
 
-interface ClockSelectorOption {
-  label: string;
-  timezone: string;
-}
-
+// Props interface for the ClockSelector component
 interface ClockSelectorProps {
-  options: ClockSelectorOption[];
-  onChange: (value: string) => void;
-  selectedClock: Timezone;
+  options: Timezone[]; // List of timezone options
+  onChange: (value: string) => void; // Callback when a new timezone is selected
+  selectedClock: Timezone; // Currently selected timezone
 }
 
 const ClockSelector = ({
@@ -43,10 +41,12 @@ const ClockSelector = ({
   return (
     <Wrapper>
       <Selector
-        options={options}
+        options={options} // Pass enriched options with formatted time
         placeholder='Search City...'
         selectedOption={selectedClock}
+        // Extract unique key for each option
         keyExtractor={(option) => option.label}
+        // Customize the label display with city name and formatted time
         labelExtractor={(option) => (
           <OptionContainer>
             <span>{option.label}</span>
@@ -54,9 +54,11 @@ const ClockSelector = ({
           </OptionContainer>
         )}
         valueExtractor={(option) => JSON.stringify(option)}
+        // Use label for search functionality
         searchExtractor={(option) => option.label}
+        // Handle option change and pass selected timezone to the parent
         onChange={onChange}
-        icon={faMagnifyingGlass}
+        icon={faMagnifyingGlass} // Icon for the search input
         iconSize='lg'
       />
     </Wrapper>

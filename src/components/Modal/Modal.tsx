@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 
+// Overlay styles for the modal background
 const Overlay = styled.div<{ isClosing: boolean }>`
   ${({ theme }) => theme.mixins.flexCenter}
   position: fixed;
@@ -37,6 +38,7 @@ const Overlay = styled.div<{ isClosing: boolean }>`
   }
 `;
 
+// Modal container styles for the content
 const ModalContainer = styled.div<{ isClosing: boolean }>`
   display: flex;
   position: relative;
@@ -85,6 +87,7 @@ const ModalContainer = styled.div<{ isClosing: boolean }>`
   }
 `;
 
+// Close button styles
 const CloseIcon = styled(FontAwesomeIcon)`
   position: absolute;
   top: 16px;
@@ -98,6 +101,7 @@ const CloseIcon = styled(FontAwesomeIcon)`
   }
 `;
 
+// Content wrapper styles for modal children
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,21 +120,38 @@ interface ModalProps {
 const Modal = ({ children, isOpen, onClose }: ModalProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Handle the visibility and closing animation of the modal
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true);
     } else {
-      const timeout = setTimeout(() => setIsAnimating(false), 250);
-      return () => clearTimeout(timeout);
+      const timeout = setTimeout(() => setIsAnimating(false), 250); // Wait for the closing animation
+      return () => clearTimeout(timeout); // Clean up timeout when modal reopens
     }
   }, [isOpen]);
 
+  // Add support for closing the modal with the Escape key
+  useEffect(() => {
+    if (isOpen) {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          onClose();
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen, onClose]);
+
+  // Handle overlay click to close the modal
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }
   };
 
+  // Prevent rendering if the modal is not visible
   if (!isOpen && !isAnimating) return null;
 
   return (

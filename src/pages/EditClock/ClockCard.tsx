@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Timezone } from '../../types/timezone.types';
 import ClockVisualSimple from '../../components/ClockVisual/ClockVisualSimple';
-import { getFormattedTime } from '../../utils/getFormattedTime';
+import { getFormattedTime } from '../../utils/timezoneUtils';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 
 const Wrapper = styled.div`
@@ -54,17 +55,26 @@ const CityLabel = styled.p`
 
 interface ClockCardProps {
   clock: Timezone;
-  onClick: (value: string) => void;
+  onClick: () => void;
 }
 
 const ClockCard = ({ clock, onClick }: ClockCardProps) => {
-  const currentTime = getFormattedTime(clock.timezone);
+  // Memoize formatted time to avoid recalculating on every render
+  const currentTime = useMemo(
+    () => (clock.timezone ? getFormattedTime(clock.timezone) : 'N/A'),
+    [clock.timezone]
+  );
 
   return (
-    <Wrapper onClick={() => onClick(clock.timezone)}>
+    <Wrapper onClick={onClick}>
+      {/* Display current time */}
       <CurrentTimeLabel>{currentTime}</CurrentTimeLabel>
-      <CityLabel>{clock.label}</CityLabel>
-      <ClockVisualSimple timezone={clock.timezone} size={100} />
+      {/* Display city label */}
+      <CityLabel>{clock.label || 'Unknown City'}</CityLabel>
+      {/* Display clock visual if timezone is valid */}
+      {clock.timezone && (
+        <ClockVisualSimple timezone={clock.timezone} size={100} />
+      )}
     </Wrapper>
   );
 };
