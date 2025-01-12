@@ -173,6 +173,8 @@ const Clock = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     navigate(PagesRoutes.MAIN);
   };
 

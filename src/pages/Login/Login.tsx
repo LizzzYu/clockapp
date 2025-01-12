@@ -116,10 +116,10 @@ const Login = () => {
         expiresInMins: 30,
       });
 
+      dispatch(loginAction());
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
 
-      dispatch(loginAction());
       navigate(PagesRoutes.CLOCK);
     } catch (error) {
       if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
