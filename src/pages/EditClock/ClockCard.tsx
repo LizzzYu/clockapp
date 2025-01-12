@@ -25,6 +25,10 @@ const Wrapper = styled.div`
       cursor: pointer;
     }
   }
+
+  ${({ theme }) => theme.mediaQuery(Breakpoints.LargeDesktop)} {
+    min-height: 30vh;
+  }
 `;
 
 const CurrentTimeLabel = styled.p`

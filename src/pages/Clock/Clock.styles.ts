@@ -105,7 +105,7 @@ export const LocationIcon = styled(motion.img)`
   ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
     width: 56px;
     height: 56px;
-    top: -70px;
+    top: -60px;
   }
 `;
 

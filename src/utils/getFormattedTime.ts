@@ -6,10 +6,21 @@ import { DateTime } from 'luxon';
  * @param format - time format, example: 'HH:mm', 'HH:mm' as default
  * @returns time string after formatted
  */
-export const getFormattedTime = (timezone: string, format: string = 'HH:mm'): string => {
+export const getFormattedTime = (
+  timezone: string,
+  format: string = 'HH:mm'
+): string => {
   if (!timezone) {
     console.error('Invalid timezone provided');
     return 'Invalid Timezone';
   }
   return DateTime.now().setZone(timezone).toFormat(format);
+};
+
+/**
+ * get the local timezone of the user
+ * @returns local timezone string
+ */
+export const getLocalTimezone = () => {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
 };

@@ -11,7 +11,7 @@ const ButtonWrapper = styled.div<{
   display: flex;
   flex-direction: ${({ position }) =>
     position === 'left' ? 'row' : 'row-reverse'};
-  padding-top: ${({ paddingTop }) => paddingTop}px;
+  padding-top: ${({ paddingTop }) => paddingTop && `${paddingTop}px`};
 `;
 
 const StyledButton = styled.button<{
@@ -39,7 +39,7 @@ const StyledButton = styled.button<{
     border: 'none',
     lineHeight: '22px',
     cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: 'background-color 0.3s ease',
+    transition: 'all 0.3s ease-in-out',
 
     '&:hover': {
       backgroundColor: isFilled
@@ -47,6 +47,7 @@ const StyledButton = styled.button<{
           ? theme.colors.grey
           : theme.colors.lightRaspberry
         : 'transparent',
+      color: isFilled ? theme.colors.white : theme.colors.green,
     },
   };
 });

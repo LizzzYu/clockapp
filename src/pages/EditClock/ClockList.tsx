@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
@@ -14,6 +15,8 @@ import { Breakpoints } from '../../constants/breakpoints.enum';
 import { Timezone } from '../../types/timezone.types';
 import ClockCard from './ClockCard';
 import { usePagination } from '../../hooks/usePagination';
+import Button from '../../components/Button/Button';
+import { PagesRoutes } from '../../constants/pages.enum';
 
 const GAP_SIZE = 16;
 const ARROW_BUTTON_OFFSET = -70;
@@ -95,13 +98,39 @@ const EmptyResult = styled.p`
   text-align: center;
 `;
 
+const AllCitiesButtonWrapper = styled.div`
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  align-items: center;
+  margin: -10px 0;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.green};
+
+    // Apply hover styles to all child elements
+    * {
+      color: ${({ theme }) => theme.colors.green};
+      transition: all 0.3s ease-in-out;
+    }
+  }
+`;
+
 interface ClockListProps {
   handleTimezoneChange: (value: string) => void;
   selectedClock: Timezone;
+  selectedIndex: number;
 }
 
-const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
+const ClockList = ({
+  handleTimezoneChange,
+  selectedClock,
+  selectedIndex,
+}: ClockListProps) => {
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const itemsPerPage = 4;
 
@@ -121,6 +150,11 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
     handleTimezoneChange(value);
     setCurrentPage(0);
     setSearch('');
+  };
+
+  const handleAllCitiesClick = () => {
+    const encodedCityLabel = encodeURIComponent(selectedClock.label);
+    navigate(`${PagesRoutes.ALL_CITIES}/${encodedCityLabel}/${selectedIndex}`);
   };
 
   const currentItems = useMemo(() => {
@@ -159,6 +193,12 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
           iconSize='xl'
         />
       </InputWrapper>
+      <AllCitiesButtonWrapper onClick={handleAllCitiesClick}>
+        <Button position='right' variant='text'>
+          All cities
+        </Button>
+        <FontAwesomeIcon icon={faChevronRight} />
+      </AllCitiesButtonWrapper>
       <Container>
         {currentPage !== 0 && currentItems.length !== 0 && (
           <ArrowButton
