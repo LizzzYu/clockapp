@@ -62,15 +62,18 @@ const CurrentCityLabel = styled.h2`
 
 // Wrapper for the input box
 const InputWrapper = styled.div`
-  width: 50%;
+  width: 60%;
   padding: ${({ theme }) => theme.spacing(4)} 0;
 `;
 
 // Wrapper for the list of clock cards
 const CardsWrapper = styled.div`
-  width: 50%;
+  width: 60%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* Dynamic columns */
   grid-template-rows: 240px;
   gap: 16px;
   overflow: auto;

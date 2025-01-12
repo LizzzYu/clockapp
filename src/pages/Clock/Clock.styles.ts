@@ -79,11 +79,10 @@ export const LabelsContainer = styled.div`
   }
 `;
 
-export const TimeLabel = styled.h3`
+export const TimeLabel = styled.h2`
   padding: 0;
   margin: 0;
   font-size: 40px;
-  font-weight: 600;
 `;
 
 export const CityLabel = styled.h6`
