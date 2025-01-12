@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,6 +8,8 @@ import {
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import Input from '../Input/Input';
 import { Breakpoints } from '../../constants/breakpoints.enum';
+
+const MIN_HEIGHT = 'calc(40vh - 132px)';
 
 const SelectorWrapper = styled.div`
   position: relative;
@@ -40,8 +42,8 @@ const SearchInputIcon = styled(FontAwesomeIcon)`
 const OptionsList = styled.ul`
   margin: 0;
   padding: 16px;
-  max-height: calc(40vh - 132px);
-  min-height: calc(40vh - 132px);
+  max-height: ${MIN_HEIGHT};
+  min-height: ${MIN_HEIGHT};
   padding-bottom: 20px;
   background-color: rgba(255, 255, 255, 0.4);
   list-style: none;
@@ -113,17 +115,22 @@ const Selector = <T,>({
 
   const handleOnchange = (value: T) => {
     const extractedValue = valueExtractor(value);
+    // Trigger the parent component's callback with the selected option
     onChange && onChange?.(extractedValue);
+    // Clear the search input after selection
     setSearch('');
   };
 
-  const filteredOptions = options.filter((option) => {
-    const searchValue = searchExtractor(option);
-    return (
-      typeof searchValue === 'string' &&
-      searchValue.toLowerCase().includes(search.trim().toLowerCase())
-    );
-  });
+  // Filter options based on the search query
+  const filteredOptions = useMemo(() => {
+    return options.filter((option) => {
+      const searchValue = searchExtractor(option);
+      return (
+        typeof searchValue === 'string' &&
+        searchValue.toLowerCase().includes(search.trim().toLowerCase())
+      );
+    });
+  }, [options, search, searchExtractor]);
 
   return (
     <SelectorWrapper>
@@ -133,12 +140,12 @@ const Selector = <T,>({
           placeholder={placeholder}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          iconPosition='start'
+          iconPosition={icon ? 'start' : undefined}
           icon={icon}
           iconSize={iconSize}
         />
       </SearchInputWrapper>
-      <OptionsList>
+      <OptionsList role='list'>
         {filteredOptions.length !== 0 ? (
           <>
             {filteredOptions.map((option) => (
