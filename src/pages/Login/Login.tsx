@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -8,7 +8,8 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import ClockLogo from '/clock-logo.svg';
 import ComingSoon from '/work-progress.svg';
 import { loginAction } from '../../redux/authSlice';
-import { ApiErrorResponse, login, LoginResponse } from '../../api/auth';
+import { ApiErrorResponse } from '../../api/auth';
+import { performLogin } from '../../services/authService';
 import useModal from '../../hooks/useModal ';
 import { useAuthRedirect } from '../../hooks/useAuthRedirect';
 import Button from '../../components/Button/Button';
@@ -71,9 +72,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
+  const togglePasswordVisibility = () =>
+    setIsPasswordVisible(!isPasswordVisible);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -95,32 +95,31 @@ const Login = () => {
   useAuthRedirect(setErrorMessage);
 
   const handleLogin = async () => {
-    setErrorMessage(undefined);
-    setIsLoading(true);
+    setErrorMessage(undefined); // Clear any existing error messages
+    setIsLoading(true); // Start the loading indicator
     try {
-      const response: LoginResponse = await login({
-        username,
-        password,
-        expiresInMins: 30,
-      });
-
-      dispatch(loginAction());
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-
-      navigate(PagesRoutes.CLOCK);
+      // Perform the login API call
+      await performLogin(username, password);
+      dispatch(loginAction()); // Update Redux state to reflect authentication status
+      navigate(PagesRoutes.CLOCK); // Redirect to the protected route
     } catch (error) {
+      // Handle API or unexpected errors
       if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
         setErrorMessage(error.response.data.message || 'Login failed.');
       } else {
         setErrorMessage('An unexpected error occurred.');
       }
     } finally {
-      setPassword('');
-      setUsername('');
-      setIsLoading(false);
+      setPassword(''); // Clear the password input field
+      setUsername(''); // Clear the username input field
+      setIsLoading(false); // Stop the loading indicator
     }
   };
+
+  const modalImageSize = useMemo(
+    () => (isMobile || isTablet ? 130 : 150),
+    [isMobile, isTablet]
+  );
 
   if (isLoading) return <Loading color={theme.colors.green} />;
 
@@ -180,7 +179,7 @@ const Login = () => {
         </Button>
       </Footer>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <img width={isMobile || isTablet ? 130 : 150} src={ComingSoon} />
+        <img width={modalImageSize} src={ComingSoon} />
         <p>coming soon...</p>
         <Button onClick={closeModal}>Confirm</Button>
       </Modal>
