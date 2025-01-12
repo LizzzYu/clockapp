@@ -3,6 +3,7 @@ import '@fontsource/ibm-plex-mono'
 import '@fontsource-variable/figtree';
 import { Variants } from 'framer-motion';
 import { breakpoints } from './constants/breakpoints.const';
+import { defaultMotionAnimation } from './styles/theme.const';
 
 export enum AppColor {
 	White = 'white',
@@ -66,39 +67,19 @@ export const globalStyle: CSSObject = {
 type SpacingFunc = (...n: number[]) => string
 const spacing: SpacingFunc = (...n) => n.map(n => `${n * 8}px`).join(' ')
 
-const defaultMotionAnimation = {
-	initial: {
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
-}
+
 
 type MediaQueryFunc = (breakpoint: keyof typeof breakpoints) => string;
-const mediaQuery: MediaQueryFunc = (breakpoint) =>
-  `@media (min-width: ${breakpoints[breakpoint]})`;
+const mediaQuery: MediaQueryFunc = (breakpoint, type = 'min') =>
+  `@media (${type}-width: ${breakpoints[breakpoint]})`;
 
-type MixinsType = {
-  flexCenter: CSSObject | string;
-}
-
-const mixins: MixinsType = {
+const mixins = {
 	flexCenter: `
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	`,
-};
+} as CSSObject;
 
 export interface AppTheme {
 	colors: AppColors
@@ -106,7 +87,7 @@ export interface AppTheme {
 	defaultMotionAnimation: Variants
 	breakpoints: typeof breakpoints;
   mediaQuery: MediaQueryFunc;
-	mixins: MixinsType
+	mixins: typeof mixins;
 }
 
 export const defaultTheme: AppTheme = {
