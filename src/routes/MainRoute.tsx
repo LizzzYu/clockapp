@@ -3,10 +3,10 @@ import { useTheme } from '@emotion/react';
 import Login from '../pages/Login/Login';
 import Clock from '../pages/Clock/Clock';
 import EditClock from '../pages/EditClock/EditClock';
-import AllCities from '../pages/AllCities/Allcities';
 import { PagesRoutes } from '../constants/pages.enum';
 import PrivateRoute from './PrivateRoute';
 import { AnimatedWrapper } from '../styles/WrapperStyles';
+import AllCities from '../pages/AllCities/AllCities';
 
 const MainRoutes = () => {
   const location = useLocation();
