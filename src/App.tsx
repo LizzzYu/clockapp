@@ -5,6 +5,7 @@ import { Global as EmotionGlobal } from '@emotion/react';
 import { appBoot } from './redux/appReducer';
 import AppRoot from './AppRoot';
 import { globalStyle } from './style';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 const App = () => {
   useEffect(() => {
@@ -14,7 +15,9 @@ const App = () => {
   return (
     <ReduxProvider store={store}>
       <EmotionGlobal styles={globalStyle} />
-      <AppRoot />
+      <ErrorBoundary>
+        <AppRoot />
+      </ErrorBoundary>
     </ReduxProvider>
   );
 };
