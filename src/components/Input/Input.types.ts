@@ -1,6 +1,6 @@
-import { InputHTMLAttributes } from "react";
-import { SizeProp } from "@fortawesome/fontawesome-svg-core";
-import { IconDefinition } from "@fortawesome/free-regular-svg-icons";
+import { InputHTMLAttributes } from 'react';
+import { SizeProp } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

@@ -1,8 +1,8 @@
-import { css, Theme } from "@emotion/react";
+import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { IconDefinition } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconPosition } from "./Input.types";
+import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconPosition } from './Input.types';
 
 const getBorderColor = (errorMessage: string | undefined, theme: Theme) =>
   errorMessage ? theme.colors.red : theme.colors.white;
@@ -68,7 +68,9 @@ export const StyledInput = styled.input<{
     icon ? (iconposition === 'start' ? '0 0 0 30px' : '0 30px 0 0') : '0'};
 `;
 
-export const ResetInputIcon = styled(FontAwesomeIcon)<{ iconposition?: IconPosition }>`
+export const ResetInputIcon = styled(FontAwesomeIcon)<{
+  iconposition?: IconPosition;
+}>`
   ${({ theme, iconposition }) => css`
     position: absolute;
     right: ${iconposition === 'end' ? theme.spacing(6) : theme.spacing(2)};

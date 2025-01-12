@@ -13,6 +13,10 @@ import { TIMEZONE_OPTIONS } from '../../constants/timezones.const';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 import { Timezone } from '../../types/timezone.types';
 import ClockCard from './ClockCard';
+import { usePagination } from '../../hooks/usePagination';
+
+const GAP_SIZE = 16;
+const ARROW_BUTTON_OFFSET = -70;
 
 const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.flexCenter}
@@ -44,7 +48,7 @@ const CarouselContainer = styled.div`
 const CarouselGrid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: ${GAP_SIZE}px;
   width: 100%;
   justify-content: center;
 `;
@@ -52,7 +56,7 @@ const CarouselGrid = styled(motion.div)`
 const ArrowButton = styled.button<{ position: string }>`
   position: absolute;
   ${({ position }) => css`
-    ${position}: -70px;
+    ${position}: ${ARROW_BUTTON_OFFSET}px;
   `}
   box-sizing: border-box;
   width: 48px;
@@ -97,20 +101,21 @@ interface ClockListProps {
 }
 
 const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
-  const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState('');
 
   const itemsPerPage = 4;
 
-  const filteredItems = useMemo(
-    () =>
-      TIMEZONE_OPTIONS.filter((option) =>
-        option.label.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search]
-  );
+  // Filtered options based on the search query
+  const filteredItems = useMemo(() => {
+    return TIMEZONE_OPTIONS.filter((option) => {
+      // Extract searchable content from the option using searchExtractor
+      const searchValue = option.label.toLowerCase();
+      return searchValue.includes(search.toLowerCase());
+    });
+  }, [search]); // Recompute only when `search` changes
 
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const { currentPage, totalPages, handleNext, handlePrev, setCurrentPage } =
+    usePagination(filteredItems.length, itemsPerPage);
 
   const handleOnCardClick = (value: string) => {
     handleTimezoneChange(value);
@@ -118,27 +123,26 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
     setSearch('');
   };
 
-  const handleNext = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const currentItems = filteredItems.slice(
-    currentPage * itemsPerPage,
-    currentPage * itemsPerPage + itemsPerPage
-  );
+  const currentItems = useMemo(() => {
+    return filteredItems.slice(
+      currentPage * itemsPerPage,
+      currentPage * itemsPerPage + itemsPerPage
+    );
+  }, [currentPage, filteredItems, itemsPerPage]);
 
   useEffect(() => {
-    setCurrentPage(0);
-    setSearch('');
-  }, [selectedClock]);
+    // Reset pagination and search input when the selected clock changes
+    // This ensures that the list always starts fresh for a new selection
+    if (selectedClock) {
+      setCurrentPage(0);
+      setSearch('');
+    }
+  }, [selectedClock, setCurrentPage]);
+
+  // Display a friendly message when no timezone data is available
+  if (TIMEZONE_OPTIONS.length === 0) {
+    return <EmptyResult>No timezone data available</EmptyResult>;
+  }
 
   return (
     <Wrapper>
@@ -147,8 +151,8 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
           placeholder='Search City...'
           value={search}
           onChange={(e) => {
-            setSearch(e.target.value);
-            setCurrentPage(0);
+            setSearch(e.target.value); // Update the search query
+            setCurrentPage(0); // Reset pagination to the first page on search change
           }}
           iconPosition='start'
           icon={faMagnifyingGlass}
@@ -170,11 +174,11 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
           <AnimatePresence mode='wait'>
             {currentItems.length !== 0 ? (
               <CarouselGrid
-                key={currentPage}
-                initial={{ opacity: 0, translateY: 100 }}
-                animate={{ opacity: 1, translateY: 0 }}
-                exit={{ opacity: 0, translateY: 100 }}
-                transition={{ duration: 0.3 }}
+                key={currentPage} // Ensure animation is triggered on page change
+                initial={{ opacity: 0 }} // Start animation with opacity 0
+                animate={{ opacity: 1 }} // Animate to opacity 1 when entering
+                exit={{ opacity: 0 }} // Animate to opacity 0 when exiting
+                transition={{ duration: 0.3 }} // Smooth transition over 0.3 seconds
               >
                 {currentItems.map((option, index) => (
                   <ClockCard
@@ -185,6 +189,7 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
                 ))}
               </CarouselGrid>
             ) : (
+              // Handle no search results case
               <EmptyResult>No search results</EmptyResult>
             )}
           </AnimatePresence>
