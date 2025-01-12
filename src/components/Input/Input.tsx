@@ -39,6 +39,9 @@ const Input: React.FC<InputProps> = ({
   // reset input value
   const handleResetClick = () => {
     setInputValue('');
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
     onChange?.({
       target: inputRef.current!,
     } as React.ChangeEvent<HTMLInputElement>);
