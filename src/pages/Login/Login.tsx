@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { RootState } from '../../redux/store';
 import ClockLogo from '/clock-logo.svg';
 import ComingSoon from '/work-progress.svg';
-import { loginAction, setRedirectMessage } from '../../redux/authSlice';
+import { loginAction } from '../../redux/authSlice';
 import { ApiErrorResponse, login, LoginResponse } from '../../api/auth';
 import useModal from '../../hooks/useModal ';
+import { useAuthRedirect } from '../../hooks/useAuthRedirect';
 import Button from '../../components/Button/Button';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Input from '../../components/Input/Input';
@@ -71,10 +71,6 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const redirectMessage = useSelector(
-    (state: RootState) => state.auth.redirectMessage
-  );
-
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
@@ -96,15 +92,7 @@ const Login = () => {
     }
   }, [username, password]);
 
-  useEffect(() => {
-    if (redirectMessage) {
-      setErrorMessage(redirectMessage);
-      const timeout = setTimeout(() => {
-        dispatch(setRedirectMessage(null));
-      }, 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [redirectMessage, dispatch]);
+  useAuthRedirect(setErrorMessage);
 
   const handleLogin = async () => {
     setErrorMessage(undefined);
