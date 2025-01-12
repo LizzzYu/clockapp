@@ -48,6 +48,7 @@ const OptionsList = styled.ul`
   overflow-y: auto;
 
   ${({ theme }) => theme.mediaQuery(Breakpoints.Tablet)} {
+    // hide scrollbar for chrome, safari, and edge
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 
@@ -75,6 +76,11 @@ const OptionItem = styled.li<{ selected: boolean }>`
   &:last-child {
     border-bottom: none;
   }
+`;
+
+const EmptyResult = styled.p`
+  color: ${({ theme }) => theme.colors.green};
+  text-align: center;
 `;
 
 interface SelectorProps<T> {
@@ -133,15 +139,21 @@ const Selector = <T,>({
         />
       </SearchInputWrapper>
       <OptionsList>
-        {filteredOptions.map((option) => (
-          <OptionItem
-            key={keyExtractor(option)}
-            onClick={() => handleOnchange(option)}
-            selected={keyExtractor(selectedOption) === keyExtractor(option)}
-          >
-            {labelExtractor(option)}
-          </OptionItem>
-        ))}
+        {filteredOptions.length !== 0 ? (
+          <>
+            {filteredOptions.map((option) => (
+              <OptionItem
+                key={keyExtractor(option)}
+                onClick={() => handleOnchange(option)}
+                selected={keyExtractor(selectedOption) === keyExtractor(option)}
+              >
+                {labelExtractor(option)}
+              </OptionItem>
+            ))}
+          </>
+        ) : (
+          <EmptyResult>No search results</EmptyResult>
+        )}
       </OptionsList>
     </SelectorWrapper>
   );

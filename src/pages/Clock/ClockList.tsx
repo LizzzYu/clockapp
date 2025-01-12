@@ -86,6 +86,11 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
+const EmptyResult = styled.p`
+  color: ${({ theme }) => theme.colors.green};
+  text-align: center;
+`;
+
 interface ClockListProps {
   handleTimezoneChange: (value: string) => void;
   selectedClock: Timezone;
@@ -163,21 +168,25 @@ const ClockList = ({ handleTimezoneChange, selectedClock }: ClockListProps) => {
 
         <CarouselContainer>
           <AnimatePresence mode='wait'>
-            <CarouselGrid
-              key={currentPage}
-              initial={{ opacity: 0, translateY: 100 }}
-              animate={{ opacity: 1, translateY: 0 }}
-              exit={{ opacity: 0, translateY: 100 }}
-              transition={{ duration: 0.3 }}
-            >
-              {currentItems.map((option, index) => (
-                <ClockCard
-                  key={option.label + index}
-                  clock={option}
-                  onClick={() => handleOnCardClick(JSON.stringify(option))}
-                />
-              ))}
-            </CarouselGrid>
+            {currentItems.length !== 0 ? (
+              <CarouselGrid
+                key={currentPage}
+                initial={{ opacity: 0, translateY: 100 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                exit={{ opacity: 0, translateY: 100 }}
+                transition={{ duration: 0.3 }}
+              >
+                {currentItems.map((option, index) => (
+                  <ClockCard
+                    key={option.label + index}
+                    clock={option}
+                    onClick={() => handleOnCardClick(JSON.stringify(option))}
+                  />
+                ))}
+              </CarouselGrid>
+            ) : (
+              <EmptyResult>No search results</EmptyResult>
+            )}
           </AnimatePresence>
         </CarouselContainer>
 

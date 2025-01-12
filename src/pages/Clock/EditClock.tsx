@@ -85,9 +85,11 @@ const BackIcon = styled(FontAwesomeIcon)`
   position: absolute;
   top: 40px;
   left: 24px;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     cursor: pointer;
+    color: ${({ theme }) => theme.colors.green};
   }
 
   ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
@@ -126,6 +128,7 @@ const EditClock = () => {
     id && !isNaN(Number(id)) ? Number(id) : 0
   );
   const [currentTime, setCurrentTime] = useState('');
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const { isTablet, isMobile } = useResponsiveSize();
 
@@ -152,11 +155,38 @@ const EditClock = () => {
     dispatch(updateClock({ index: selectedIndex, timezone: selectedOption }));
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX !== null) {
+      const swipeDistance = touchStartX - e.changedTouches[0].clientX;
+
+      // determine swipe direction
+      if (swipeDistance > 50 && selectedIndex < clocks.length - 1) {
+        // swipe left - next clock
+        setSelectedIndex(selectedIndex + 1);
+      } else if (swipeDistance < -50 && selectedIndex > 0) {
+        // swipe right - previous clock
+        setSelectedIndex(selectedIndex - 1);
+      }
+    }
+
+    // reset touch start
+    setTouchStartX(null);
+  };
+
   return (
     <Wrapper>
       <BackIcon icon={faArrowLeft} size='xl' onClick={handlePreviousPage} />
 
-      <ClocksWrapper selectedIndex={selectedIndex} clocksNumber={clocks.length}>
+      <ClocksWrapper
+        selectedIndex={selectedIndex}
+        clocksNumber={clocks.length}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {clocks.map((clock, index) => (
           <ClockContainer
             key={clock.label + index}
