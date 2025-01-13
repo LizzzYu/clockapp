@@ -31,26 +31,32 @@ export const locationIconVariants = {
 };
 
 export const Wrapper = styled.div`
+  position: relative;
   width: 100vw;
   height: 100dvh;
   ${({ theme }) => theme.mixins.flexCenter}
   flex-direction: column;
+  justify-content: flex-start;
   overflow: hidden;
   padding: 0 53px;
-  margin-bottom: 40vh;
 `;
 
 export const ClocksWrapper = styled.div<{
   selectedIndex: number;
   clocksNumber: number;
 }>`
+  position: relative;
   display: flex;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 8dvh;
   width: ${({ clocksNumber }) => `calc(240px * ${clocksNumber})`};
   transition: transform 0.5s ease-in-out;
   transform: ${({ selectedIndex }) =>
     `translateX(calc(50% - ${selectedIndex} * 240px - 120px))`};
+
+  ${({ theme }) => theme.mediaQuery(Breakpoints.Tablet)} {
+    margin-top: 1dvh;
+  }
 `;
 
 export const ClockContainer = styled.div<{ isSelected: boolean }>`
