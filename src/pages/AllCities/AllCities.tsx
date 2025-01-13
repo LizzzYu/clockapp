@@ -18,13 +18,14 @@ import { Timezone } from '../../types/timezone.types';
 import { updateClock } from '../../redux/timezoneSlice';
 import { PagesRoutes } from '../../constants/pages.enum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from '../../components/Button/Button';
 
 // Wrapper for the entire page layout
 const Wrapper = styled.div`
   width: 100vw;
   position: relative;
   height: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   ${({ theme }) => theme.mixins.flexCenter}
   flex-direction: column;
   align-items: center;
@@ -67,14 +68,19 @@ const InputWrapper = styled.div`
 `;
 
 // Wrapper for the list of clock cards
-const CardsWrapper = styled.div`
+const CardsWrapper = styled.div<{ isFlexLayout: boolean }>`
   width: 60%;
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(150px, 1fr)
-  ); /* Dynamic columns */
-  grid-template-rows: 240px;
+  display: ${({ isFlexLayout }) => (isFlexLayout ? 'flex' : 'grid')};
+  ${({ isFlexLayout }) =>
+    isFlexLayout
+      ? css`
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        `
+      : css`
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          grid-template-rows: 230px;
+        `}
   gap: 16px;
   overflow: auto;
 
@@ -105,66 +111,98 @@ export const BackIcon = styled(FontAwesomeIcon)`
   }
 `;
 
+// Wrapper for the action buttons
+const ActionButtonWrapper = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 20%;
+  transition: all 0.2s ease-in-out;
+
+  ${({ theme }) => theme.mixins.flexCenter}
+`;
+
 const EmptyResult = styled.p`
   color: ${({ theme }) => theme.colors.green};
   text-align: center;
 `;
 
 const AllCities = () => {
-  const [currentTime, setCurrentTime] = useState(''); // Current time displayed on the page
-  const [search, setSearch] = useState(''); // Search query for filtering cities
   const { currentCity, id } = useParams<{ currentCity: string; id: string }>();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const localTimezone = getLocalTimezone();
 
-  const localTimezone = getLocalTimezone(); // Retrieve the local timezone
-
+  // Redux state
   const clocks = useSelector((state: RootState) => state.timezones.clocks);
-  const selectedClock =
+  const initialClock =
     clocks.find((clock) => clock.label === currentCity) ?? TIMEZONE_OPTIONS[0];
 
-  const isCurrentTimezone = localTimezone === selectedClock.timezone;
+  // Local state
+  const [displayedCity, setDisplayedCity] = useState(initialClock);
+  const [currentTime, setCurrentTime] = useState(
+    getFormattedTime(initialClock.timezone)
+  );
+  const [search, setSearch] = useState('');
+
+  const isCurrentTimezone = localTimezone === displayedCity.timezone;
 
   // Filter options based on the search query
   const filteredItems = useMemo(() => {
     return TIMEZONE_OPTIONS.filter((option) => {
-      const searchValue = option.label.toLowerCase(); // Case-insensitive search
+      const searchValue = option.label.toLowerCase();
       return searchValue.includes(search.toLowerCase());
     });
   }, [search]);
 
-  // Navigate back to the edit clock page
-  const handlePreviousPage = () => {
-    navigate(`${PagesRoutes.EDIT_CLOCK}/${id}`);
-  };
-
-  // Handle clock selection and update Redux state
-  const handleOnCardClick = (value: string) => {
-    const selectedOption = JSON.parse(value) as Timezone;
-    dispatch(updateClock({ index: Number(id), timezone: selectedOption }));
-    handlePreviousPage();
-  };
-
-  // Update the current time periodically
+  // Update the current time every 10 seconds
   useEffect(() => {
     const updateTime = () => {
-      const now = getFormattedTime(selectedClock.timezone);
-      setCurrentTime(now);
+      setCurrentTime(getFormattedTime(displayedCity.timezone));
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 10000); // Update every 10 seconds
+    const interval = setInterval(updateTime, 10000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [selectedClock.timezone]);
+    return () => clearInterval(interval);
+  }, [displayedCity.timezone]);
+
+  // Handle clock card click
+  const handleOnCardClick = (value: string) => {
+    const selectedOption = JSON.parse(value) as Timezone;
+    setDisplayedCity(selectedOption);
+    setCurrentTime(getFormattedTime(selectedOption.timezone));
+  };
+
+  // Handle Save action
+  const handleSave = () => {
+    dispatch(updateClock({ index: Number(id), timezone: displayedCity }));
+    navigate(`${PagesRoutes.EDIT_CLOCK}/${id}`);
+  };
+
+  // Handle Reset action
+  const handleReset = () => {
+    setDisplayedCity(initialClock);
+    setCurrentTime(getFormattedTime(initialClock.timezone));
+  };
+
+  // Handle navigating back to the previous page
+  const handlePreviousPage = () => {
+    navigate(`${PagesRoutes.EDIT_CLOCK}/${id}`);
+  };
 
   return (
     <Wrapper>
       {/* Back icon to navigate to the previous page */}
       <BackIcon icon={faArrowLeft} size='xl' onClick={handlePreviousPage} />
-
-      {/* Current city and time information */}
+      {/* Action buttons for Reset and Save */}
+      <ActionButtonWrapper>
+        <Button variant='text' onClick={handleReset}>
+          Reset
+        </Button>
+        <Button variant='text' onClick={handleSave}>
+          Save
+        </Button>
+      </ActionButtonWrapper>
       <CurrentCityInfoWrapper>
         {isCurrentTimezone && (
           <LocationIcon
@@ -177,7 +215,7 @@ const AllCities = () => {
           />
         )}
         <CurrentTimeLabel>{currentTime}</CurrentTimeLabel>
-        <CurrentCityLabel>{selectedClock.label}</CurrentCityLabel>
+        <CurrentCityLabel>{displayedCity.label}</CurrentCityLabel>
       </CurrentCityInfoWrapper>
 
       {/* Search input */}
@@ -185,7 +223,7 @@ const AllCities = () => {
         <Input
           placeholder='Search City...'
           value={search}
-          onChange={(e) => setSearch(e.target.value)} // Update the search query
+          onChange={(e) => setSearch(e.target.value)}
           iconPosition='start'
           icon={faMagnifyingGlass}
           iconSize='xl'
@@ -194,7 +232,7 @@ const AllCities = () => {
 
       {/* List of clock cards */}
       {filteredItems.length !== 0 ? (
-        <CardsWrapper>
+        <CardsWrapper isFlexLayout={filteredItems.length < 6}>
           {filteredItems.map((timezone) => (
             <ClockCard
               key={timezone.label}

@@ -27,8 +27,9 @@ const Wrapper = styled.div`
     }
   }
 
-  ${({ theme }) => theme.mediaQuery(Breakpoints.LargeDesktop)} {
-    min-height: 30vh;
+  ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
+    min-height: 230px;
+    max-width: 190px;
   }
 `;
 
