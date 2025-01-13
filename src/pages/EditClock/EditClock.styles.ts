@@ -81,12 +81,8 @@ export const CurrentTimeLabel = styled.h2`
   text-align: center;
 
   ${({ theme }) => css`
-    padding-top: ${theme.spacing(5)};
+    padding-top: ${theme.spacing(2)};
     color: ${theme.colors.white};
-
-    ${theme.mediaQuery(Breakpoints.Desktop)} {
-      padding-top: ${theme.spacing(2)};
-    }
   `};
 `;
 
