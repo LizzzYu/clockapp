@@ -70,13 +70,7 @@ export const ClockContainer = styled.div<{ isSelected: boolean }>`
   transform: scale(${({ isSelected }) => (isSelected ? 1 : 0.75)});
   transition: transform 0.5s ease-in-out;
 
-  margin-top: 20px;
-
   ${({ theme }) => theme.mediaQuery(Breakpoints.Tablet)} {
-    margin-top: 20px;
-  }
-
-  ${({ theme }) => theme.mediaQuery(Breakpoints.Desktop)} {
     margin-top: 20px;
   }
 `;
@@ -109,7 +103,7 @@ export const CityLabel = styled.h2`
 export const BackIcon = styled(FontAwesomeIcon)`
   position: absolute;
   top: 40px;
-  left: 24px;
+  left: 80px;
   transition: all 0.2s ease-in-out;
   z-index: 2;
 
