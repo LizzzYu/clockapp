@@ -78,7 +78,7 @@ A responsive, feature-rich clock application built with **React**, **Redux**, **
 
 ### Editing a Clock
 
-1. Click the right top icon to open the edit page.
+1. Click the right top icon or click on specific clock to open the edit page.
 2. Modify clock details.
 3. Save changes to update the clock.
 
