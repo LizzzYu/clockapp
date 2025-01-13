@@ -32,7 +32,7 @@ export const locationIconVariants = {
 
 export const Wrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   ${({ theme }) => theme.mixins.flexCenter}
   flex-direction: column;
   overflow: hidden;

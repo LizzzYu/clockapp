@@ -11,7 +11,7 @@ const InterfaceContainer = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.black,
   color: theme.colors.white,
   width: '100vw',
-  minHeight: '100vh',
+  minHeight: '100dvh',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

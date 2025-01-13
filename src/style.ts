@@ -75,7 +75,7 @@ export const globalStyle: CSSObject = {
   },
   '#reactroot': {
     display: 'flex',
-    minHeight: '100vh',
+    minHeight: '100dvh',
   },
 };
 

@@ -6,7 +6,7 @@ const Background = styled.div`
   ${({ theme }) => css`
     ${theme.mixins.flexCenter}
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background-color: #78be43;
     background-image: radial-gradient(
         circle,

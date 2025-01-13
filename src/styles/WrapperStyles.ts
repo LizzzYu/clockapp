@@ -4,7 +4,7 @@ import { Breakpoints } from '../constants/breakpoints.enum';
 
 export const AnimatedWrapper = styled(motion.div)(({ theme }) => ({
   width: '100%',
-  maxHeight: '100vh',
+  maxHeight: '100dvh',
   maxWidth: '100vw',
   overflow: 'hidden',
   display: 'flex',

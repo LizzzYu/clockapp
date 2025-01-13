@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const LoaderWrapper = styled(motion.div)`
   ${({ theme }) => theme.mixins.flexCenter}
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
 `;
 
