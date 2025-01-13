@@ -71,8 +71,12 @@ export const globalStyle: CSSObject = {
     fontFamily: `'Figtree Variable', 'IBM Plex Mono', monospace`,
     margin: 0,
     boxSizing: 'border-box',
-    padding: `calc(env(safe-area-inset-top, 0px)) calc(env(safe-area-inset-right, 0px)) 
-              calc(env(safe-area-inset-bottom, 0px)) calc(env(safe-area-inset-left, 0px))`,
+    padding: `
+      calc(env(safe-area-inset-top, 0px) + constant(safe-area-inset-top, 0px))
+      calc(env(safe-area-inset-right, 0px) + constant(safe-area-inset-right, 0px))
+      calc(env(safe-area-inset-bottom, 0px) + constant(safe-area-inset-bottom, 0px))
+      calc(env(safe-area-inset-left, 0px) + constant(safe-area-inset-left, 0px))
+    `,
   },
   '#reactroot': {
     display: 'flex',
