@@ -139,8 +139,12 @@ const ClockList = ({
   const filteredItems = useMemo(() => {
     return options.filter((option) => {
       // Extract searchable content from the option using searchExtractor
-      const searchValue = option.label.toLowerCase();
-      return searchValue.includes(search.toLowerCase());
+      const labelValue = option.label.toLowerCase();
+      const regionValue = option.region.toLowerCase();
+      return (
+        labelValue.includes(search.toLowerCase()) ||
+        regionValue.includes(search.toLowerCase())
+      );
     });
   }, [options, search]); // Recompute only when `search` changes
 
