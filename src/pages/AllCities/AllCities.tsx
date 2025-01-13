@@ -144,15 +144,25 @@ const AllCities = () => {
   );
   const [search, setSearch] = useState('');
 
+  const sortedTimezoneOptions = useMemo(() => {
+    return [...TIMEZONE_OPTIONS].sort((a, b) =>
+      a.region.localeCompare(b.region)
+    );
+  }, []);
+
   const isCurrentTimezone = localTimezone === displayedCity.timezone;
 
   // Filter options based on the search query
   const filteredItems = useMemo(() => {
-    return TIMEZONE_OPTIONS.filter((option) => {
-      const searchValue = option.label.toLowerCase();
-      return searchValue.includes(search.toLowerCase());
+    return sortedTimezoneOptions.filter((option) => {
+      const labelValue = option.label.toLowerCase();
+      const regionValue = option.region.toLowerCase();
+      return (
+        labelValue.includes(search.toLowerCase()) ||
+        regionValue.includes(search.toLowerCase())
+      );
     });
-  }, [search]);
+  }, [search, sortedTimezoneOptions]);
 
   // Update the current time every 10 seconds
   useEffect(() => {
@@ -196,10 +206,10 @@ const AllCities = () => {
       <BackIcon icon={faArrowLeft} size='xl' onClick={handlePreviousPage} />
       {/* Action buttons for Reset and Save */}
       <ActionButtonWrapper>
-        <Button variant='text' onClick={handleReset}>
+        <Button variant='text' fontSize={18} onClick={handleReset}>
           Reset
         </Button>
-        <Button variant='text' onClick={handleSave}>
+        <Button variant='text' fontSize={18} onClick={handleSave}>
           Save
         </Button>
       </ActionButtonWrapper>
@@ -215,7 +225,9 @@ const AllCities = () => {
           />
         )}
         <CurrentTimeLabel>{currentTime}</CurrentTimeLabel>
-        <CurrentCityLabel>{displayedCity.label}</CurrentCityLabel>
+        <CurrentCityLabel>
+          {displayedCity.region} - {displayedCity.label}
+        </CurrentCityLabel>
       </CurrentCityInfoWrapper>
 
       {/* Search input */}

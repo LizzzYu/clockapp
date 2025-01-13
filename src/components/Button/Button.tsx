@@ -17,7 +17,8 @@ const ButtonWrapper = styled.div<{
 const StyledButton = styled.button<{
   disabled: boolean;
   variant: ButtonVariant;
-}>(({ theme, disabled, variant }) => {
+  fontSize?: number;
+}>(({ theme, disabled, variant, fontSize }) => {
   const isFilled = variant === 'filled';
   const isText = variant === 'text';
 
@@ -31,7 +32,7 @@ const StyledButton = styled.button<{
         : theme.colors.raspberry
       : 'transparent',
     color: theme.colors.white,
-    fontSize: isFilled ? '16px' : '14px',
+    fontSize: fontSize ? `${fontSize}px` : isFilled ? '16px' : '14px',
     fontWeight: isFilled ? '500' : '700',
     textDecoration: isText && !disabled ? 'underline' : 'none',
     outline: 'none',
@@ -79,6 +80,7 @@ interface ButtonProps {
   onClick?: () => void;
   width?: number;
   paddingTop?: number;
+  fontSize?: number;
   disabled?: boolean;
   variant?: ButtonVariant;
   position?: ButtonPosition;
@@ -90,6 +92,7 @@ const Button = ({
   onClick,
   width,
   paddingTop,
+  fontSize,
   disabled = false,
   variant = 'filled',
   position = 'left',
@@ -106,6 +109,7 @@ const Button = ({
         onClick={onClick}
         disabled={disabled}
         variant={variant}
+        fontSize={fontSize}
       >
         {children}
         {errorMessage && (

@@ -109,7 +109,9 @@ const Clock = () => {
                 {!isMobile && (
                   <LabelsContainer>
                     <TimeLabel>{clockTime}</TimeLabel>
-                    <CityLabel>{clock.label}</CityLabel>
+                    <CityLabel>
+                      {clock.region} - {clock.label}
+                    </CityLabel>
                   </LabelsContainer>
                 )}
               </ClockWrapper>

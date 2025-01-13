@@ -56,6 +56,7 @@ export const EditIcon = styled(FontAwesomeIcon)`
   right: 24px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  z-index: 2;
 
   &:hover {
     color: ${({ theme }) => theme.colors.green};

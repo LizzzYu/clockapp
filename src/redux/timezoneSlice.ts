@@ -6,12 +6,19 @@ import { getLocalTimezone } from '../utils/timezoneUtils';
 const localTimezone = getLocalTimezone();
 const localClock = TIMEZONE_OPTIONS.find(
   (option) => option.timezone === localTimezone
-) || { label: 'Local', timezone: 'local', latitude: 0, longitude: 0 };
+) || {
+  region: 'Local',
+  label: 'Local',
+  timezone: 'local',
+  latitude: 0,
+  longitude: 0,
+};
 
 const initialState: TimezoneState = {
   clocks: [
     localClock,
     {
+      region: 'USA',
       label: 'New York',
       timezone: 'America/New_York',
       latitude: 40.7128,

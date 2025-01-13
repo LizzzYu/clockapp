@@ -49,13 +49,15 @@ const ClockSelector = ({
         // Customize the label display with city name and formatted time
         labelExtractor={(option) => (
           <OptionContainer>
-            <span>{option.label}</span>
+            <span>
+              {option.region} - {option.label}
+            </span>
             <span>{getFormattedTime(option.timezone)}</span>
           </OptionContainer>
         )}
         valueExtractor={(option) => JSON.stringify(option)}
-        // Use label for search functionality
-        searchExtractor={(option) => option.label}
+        // Use label or region for search functionality
+        searchExtractor={(option) => option.label + ' ' + option.region}
         // Handle option change and pass selected timezone to the parent
         onChange={onChange}
         icon={faMagnifyingGlass} // Icon for the search input

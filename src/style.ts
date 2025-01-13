@@ -69,9 +69,10 @@ export const globalStyle: CSSObject = {
     backgroundColor: colors.black,
     color: colors.white,
     fontFamily: `'Figtree Variable', 'IBM Plex Mono', monospace`,
-    padding: 0,
     margin: 0,
     boxSizing: 'border-box',
+    padding: `calc(env(safe-area-inset-top, 0px)) calc(env(safe-area-inset-right, 0px)) 
+              calc(env(safe-area-inset-bottom, 0px)) calc(env(safe-area-inset-left, 0px))`,
   },
   '#reactroot': {
     display: 'flex',

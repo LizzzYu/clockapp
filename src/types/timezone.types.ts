@@ -1,5 +1,6 @@
 export interface Timezone {
   label: string;
+  region: string;
   timezone: string;
   latitude: number;
   longitude: number;

@@ -10,7 +10,6 @@ import {
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import Input from '../../components/Input/Input';
-import { TIMEZONE_OPTIONS } from '../../constants/timezones.const';
 import { Breakpoints } from '../../constants/breakpoints.enum';
 import { Timezone } from '../../types/timezone.types';
 import ClockCard from './ClockCard';
@@ -119,12 +118,14 @@ const AllCitiesButtonWrapper = styled.div`
 `;
 
 interface ClockListProps {
+  options: Timezone[];
   handleTimezoneChange: (value: string) => void;
   selectedClock: Timezone;
   selectedIndex: number;
 }
 
 const ClockList = ({
+  options,
   handleTimezoneChange,
   selectedClock,
   selectedIndex,
@@ -136,12 +137,12 @@ const ClockList = ({
 
   // Filtered options based on the search query
   const filteredItems = useMemo(() => {
-    return TIMEZONE_OPTIONS.filter((option) => {
+    return options.filter((option) => {
       // Extract searchable content from the option using searchExtractor
       const searchValue = option.label.toLowerCase();
       return searchValue.includes(search.toLowerCase());
     });
-  }, [search]); // Recompute only when `search` changes
+  }, [options, search]); // Recompute only when `search` changes
 
   const { currentPage, totalPages, handleNext, handlePrev, setCurrentPage } =
     usePagination(filteredItems.length, itemsPerPage);
@@ -174,7 +175,7 @@ const ClockList = ({
   }, [selectedClock, setCurrentPage]);
 
   // Display a friendly message when no timezone data is available
-  if (TIMEZONE_OPTIONS.length === 0) {
+  if (options.length === 0) {
     return <EmptyResult>No timezone data available</EmptyResult>;
   }
 

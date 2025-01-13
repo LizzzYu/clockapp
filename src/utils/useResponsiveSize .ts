@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 type Breakpoints = {
+  ultraWide: number;
   largeDesktop: number;
   desktop: number;
   tablet: number;
@@ -8,6 +9,7 @@ type Breakpoints = {
 };
 
 const defaultBreakpoints: Breakpoints = {
+  ultraWide: 1920,
   largeDesktop: 1440,
   desktop: 1024,
   tablet: 768,
@@ -19,7 +21,8 @@ const useResponsiveSize = (breakpoints: Breakpoints = defaultBreakpoints) => {
 
   const isMobile = width < breakpoints.tablet;
   const isTablet = width >= breakpoints.tablet && width < breakpoints.desktop;
-  const isDesktop = width >= breakpoints.desktop && width < breakpoints.largeDesktop;
+  const isDesktop =
+    width >= breakpoints.desktop && width < breakpoints.largeDesktop;
   const isLargeDesktop = width >= breakpoints.largeDesktop;
 
   useEffect(() => {

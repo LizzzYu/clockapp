@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
@@ -49,6 +49,12 @@ const EditClock = () => {
   const { isTablet, isMobile } = useResponsiveSize();
 
   const selectedClock = clocks[selectedIndex];
+
+  const sortedTimezoneOptions = useMemo(() => {
+    return [...TIMEZONE_OPTIONS].sort((a, b) =>
+      a.region.localeCompare(b.region)
+    );
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -151,17 +157,20 @@ const EditClock = () => {
         exit='exit'
       >
         <CurrentTimeLabel>{currentTime}</CurrentTimeLabel>
-        <CityLabel>{selectedClock.label}</CityLabel>
+        <CityLabel>
+          {selectedClock.region} - {selectedClock.label}
+        </CityLabel>
       </MotionLabelContainer>
       {isTablet || isMobile ? (
         <ClockSelector
           selectedClock={selectedClock}
-          options={TIMEZONE_OPTIONS}
+          options={sortedTimezoneOptions}
           onChange={handleTimezoneChange}
         />
       ) : (
         <ClockList
           selectedClock={selectedClock}
+          options={sortedTimezoneOptions}
           handleTimezoneChange={handleTimezoneChange}
           selectedIndex={selectedIndex}
         />

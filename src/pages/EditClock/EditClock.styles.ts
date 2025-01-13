@@ -46,6 +46,7 @@ export const ClocksWrapper = styled.div<{
 }>`
   display: flex;
   align-items: center;
+  padding-top: 20px;
   width: ${({ clocksNumber }) => `calc(240px * ${clocksNumber})`};
   transition: transform 0.5s ease-in-out;
   transform: ${({ selectedIndex }) =>
@@ -104,6 +105,7 @@ export const BackIcon = styled(FontAwesomeIcon)`
   top: 40px;
   left: 24px;
   transition: all 0.2s ease-in-out;
+  z-index: 2;
 
   &:hover {
     cursor: pointer;

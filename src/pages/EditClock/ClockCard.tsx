@@ -31,6 +31,11 @@ const Wrapper = styled.div`
     min-height: 230px;
     max-width: 190px;
   }
+
+  ${({ theme }) => theme.mediaQuery(Breakpoints.UltraWide)} {
+    min-height: 230px;
+    max-width: calc(50vw / 4);
+  }
 `;
 
 const CurrentTimeLabel = styled.p`
@@ -45,13 +50,21 @@ const CurrentTimeLabel = styled.p`
   }
 `;
 
-const CityLabel = styled.p`
+const Label = styled.p`
   padding: 0;
   margin: 0;
   color: ${({ theme }) => theme.colors.green};
   font-size: 14px;
   font-weight: 400;
-  padding-bottom: 16px;
+  text-align: center;
+`;
+
+const RegionLabel = styled(Label)`
+  padding-top: 8px;
+`;
+
+const CityLabel = styled(Label)`
+  padding-bottom: 8px;
 `;
 
 interface ClockCardProps {
@@ -71,6 +84,7 @@ const ClockCard = ({ clock, onClick }: ClockCardProps) => {
       {/* Display current time */}
       <CurrentTimeLabel>{currentTime}</CurrentTimeLabel>
       {/* Display city label */}
+      <RegionLabel>{clock.region || 'Unknown City'}</RegionLabel>
       <CityLabel>{clock.label || 'Unknown City'}</CityLabel>
       {/* Display clock visual if timezone is valid */}
       {clock.timezone && (
