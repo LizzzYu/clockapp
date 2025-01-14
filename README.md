@@ -162,7 +162,7 @@ Explore the app's design on [Figma](https://www.figma.com/design/qBqiiKfWL0fWwzO
 
 ## API Documentation
 
-This app utilizes the [DummyJSON API](https://dummyjson.com/docs/auth#auth-login) for authentication and timezone data.
+This app utilizes the [DummyJSON API](https://dummyjson.com/docs/auth#auth-login) for authentication data.
 
 ## Contributing
 
